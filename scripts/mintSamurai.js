@@ -13,7 +13,10 @@ async function main() {
   let nftAddress = "0x70a73b3F25342A64f3f5862C8539a97119c9DDF4";
   let nft = await NFT.at(nftAddress);
 
-  await nft.withdrawAll();
+
+  let numPurchase = 2;
+
+  await nft.mintSamurai(numPurchase, {value: 100000000000000000});
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -7,8 +7,13 @@ import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "hardhat/console.sol";
 
+//  _  __ _   _   _____   ___       ___
+// | |/ /| \ | | / ____| |__ \     / _ \
+// | ' / |  \| || (___      ) |   | | | |
+// |  <  | . ` | \___ \    / /    | | | |
+// | . \ | |\  | ____) |  / /_  _ | |_| |
+// |_|\_\|_| \_||_____/  |____|(_) \___/
 
 interface KNS1Interface {
   function tokensOfOwner(address _owner) external view returns(uint256[] memory );
@@ -34,15 +39,16 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721Enumerable {
 	uint public numClaim = 0;
 	bool public hasSaleStarted = true;
 	bool public hasPresaleStarted = true;
+	bool public hasClaimeStarted = true;
 	string private _baseTokenURI = "http://api.katanansamurai.art/Metadata/";
 
 	mapping (address => uint256) public hasClaimed;
 	mapping (address => uint256) public hasPresale;
+
     // Events
     // ------------------------------------------------------------------------
-	event mintEvent(address owner, uint256 numPurchase, uint256 totalSupply);
+	event mintEvent(address owner, uint256 numPurchase, uint256 totalSale);
 	event claimEvent(address owner, uint256 numClaims, uint256 totalClaim);
-	event presaleEvent(address owner, uint256 numPresale, uint256 totalSupply);
 	
 	// Constructor
     // ------------------------------------------------------------------------
@@ -53,11 +59,10 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721Enumerable {
 	// Claim functions
     // ------------------------------------------------------------------------
 	function claimSamurai(uint256 quantity) external {
-		uint256[] memory tokenId;
-		tokenId = KNS1Contract.tokensOfOwner(msg.sender);
+		uint256[] memory tokenId = KNS1Contract.tokensOfOwner(msg.sender);
 
-		require(hasSaleStarted == true, "Sale hasn't started.");
-		require(hasClaimed[msg.sender].add(quantity) <= tokenId.length, "Exceed the quantity that can be claimed");
+		require(hasPresaleStarted == true, "Claime hasn't started.");
+		require(quantity > 0 && hasClaimed[msg.sender].add(quantity) <= tokenId.length, "Exceed the quantity that can be claimed");
 
 		for (uint i = 0; i < quantity; i++) {
 			hasClaimed[msg.sender] = hasClaimed[msg.sender].add(1);
@@ -91,7 +96,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721Enumerable {
 		hasPresale[msg.sender] = hasPresale[msg.sender].add(quantity);
 		numPresale = numPresale.add(quantity);
 
-		emit presaleEvent(msg.sender, quantity, numTokens);
+		emit mintEvent(msg.sender, quantity, numTokens);
     }
 
 	// Giveaway functions
@@ -111,7 +116,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721Enumerable {
     // ------------------------------------------------------------------------
 	function mintSamurai(uint256 numPurchase) external payable {
 		require(hasSaleStarted == true, "Sale hasn't started.");
-		require(numPurchase > 0 && numPurchase <= 50, "You can mint minimum 1, maximum 50 punks.");
+		require(numPurchase > 0 && numPurchase <= 50, "You can mint minimum 1, maximum 50 samurais.");
 		require(totalSupply().add(numPurchase) <= MAX_SAMURAI, "Sold out!");
 		require(msg.value >= PRICE.mul(numPurchase), "Ether value sent is below the price.");
 

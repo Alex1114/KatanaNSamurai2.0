@@ -13,7 +13,7 @@ async function main() {
   let nftAddress = "0x70a73b3F25342A64f3f5862C8539a97119c9DDF4";
   let nft = await NFT.at(nftAddress);
 
-  await nft.withdrawAll();
+  await nft.pausePresale();
 }
 
 // We recommend this pattern to be able to use async/await everywhere

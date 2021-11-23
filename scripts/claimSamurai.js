@@ -10,10 +10,10 @@ const NFT = artifacts.require("KatanaNSamurai2");
 async function main() {
 
 
-  let nftAddress = "0xF8a1883F1b84964Dc4444333FdbA9805BF9215e5";
+  let nftAddress = "0x70a73b3F25342A64f3f5862C8539a97119c9DDF4";
   let nft = await NFT.at(nftAddress);
 
-  await nft.setURI("http://api.katanansamurai.art/Metadata/");
+  await nft.claimSamurai(5);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
