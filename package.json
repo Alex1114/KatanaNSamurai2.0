@@ -22,9 +22,12 @@
     "web": "0.0.2"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^3.4.0",
+    "@openzeppelin/contracts": "^4.3.2",
     "@openzeppelin/test-helpers": "^0.5.15",
+    "@truffle/hdwallet-provider": "^1.4.2-hdwallet-signTypedMessage.0",
+    "@trufflesuite/web3-provider-engine": "^15.0.14",
     "dotenv": "^10.0.0",
+    "hardhat-contract-sizer": "^2.1.1",
     "hardhat-gas-reporter": "^1.0.4"
   }
 }

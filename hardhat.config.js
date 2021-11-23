@@ -3,6 +3,7 @@ require("@nomiclabs/hardhat-truffle5");
 require('hardhat-deploy');
 require("hardhat-gas-reporter");
 require("dotenv").config();
+require('hardhat-contract-sizer');
 
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -22,7 +23,7 @@ task("accounts", "Prints the list of accounts", async () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: "0.7.3",
+  solidity: "0.8.4",
 
   networks:{
     hardhat: {

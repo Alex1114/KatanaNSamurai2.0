@@ -10,7 +10,7 @@ const NFT = artifacts.require("KatanaNSamurai2");
 async function main() {
 
 
-  let nftAddress = "0x19BaD69cB7f3396A832a23D7667Db1998736758d";
+  let nftAddress = "0x9695240daF708f86F2Db64678D6220DaefA5CA3E";
   let nft = await NFT.at(nftAddress);
 
   await nft.pauseSale();
