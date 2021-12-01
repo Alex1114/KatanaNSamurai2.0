@@ -7,13 +7,36 @@ const hre = require("hardhat");
 
 const NFT = artifacts.require("KatanaNSamurai2");
 
+
 async function main() {
 
-
-  let nftAddress = "0x70a73b3F25342A64f3f5862C8539a97119c9DDF4";
+  let nftAddress = "0x5CffCFA57a3E73A0fC8e9244355F9F2021745c5f";
   let nft = await NFT.at(nftAddress);
+  // let chainId = await ethers.provider.getNetwork()
+  let owner = new ethers.Wallet(process.env.RINKEBY_PRIVATE_KEY);
+  let quantity = 5;
+  let maxClaimNum = 50;
 
-  await nft.claimSamurai(5);
+  const domain = {
+    name: 'Katana N Samurai 2',
+    version: '1.0.0',
+    chainId: 4,
+    verifyingContract: nftAddress
+  };
+
+  const types = {
+    NFT: [
+        { name: 'addressForClaim', type: 'address' },
+        { name: 'maxClaimNum', type: 'uint256' },
+    ],
+  };
+
+  const value = { addressForClaim: "0xbd42A2035D41b450eE7106C9F9C0C736fb546226", maxClaimNum: 50};
+
+  signature = await owner._signTypedData(domain, types, value);
+  console.log(signature);
+
+  await nft.claimSamurai(quantity, maxClaimNum, signature);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
