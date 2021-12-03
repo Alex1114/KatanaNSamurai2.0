@@ -10,7 +10,7 @@ const NFT = artifacts.require("KatanaNSamurai2");
 
 async function main() {
 
-  let nftAddress = "0x5CffCFA57a3E73A0fC8e9244355F9F2021745c5f";
+  let nftAddress = "0x6cAf21819C8B31E87e3bD7eB0433C56bD76cC5d8";
   let nft = await NFT.at(nftAddress);
   // let chainId = await ethers.provider.getNetwork()
   let owner = new ethers.Wallet(process.env.RINKEBY_PRIVATE_KEY);

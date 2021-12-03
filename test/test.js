@@ -41,6 +41,12 @@ describe("KatanaNSamurai2", function () {
 
 		});
 
+		it("pauseClaim Function", async function () {
+
+			await contract.connect(owner).pauseClaim();
+
+		});
+
 		it("pausePresale Function", async function () {
 
 			await contract.connect(owner).pausePresale();
@@ -53,6 +59,11 @@ describe("KatanaNSamurai2", function () {
 
 		});
 
+		it("startClaim Function", async function () {
+
+			await contract.connect(owner).startClaim();
+
+		});
 
 		it("startPresale Function", async function () {
 
@@ -62,15 +73,15 @@ describe("KatanaNSamurai2", function () {
 
 		it("giveawayMintSamurai Function", async function () {
 
-			await contract.connect(owner).giveawayMintSamurai(addr2.address, 50);
-			// expect(await contract.totalSupply()).to.equal(50);
+			await contract.connect(owner).giveawayMintSamurai(addr2.address, 2);
+			expect(await contract.totalSupply()).to.equal(2);
 
 		});
 
 		it("mintSamurai Function", async function () {
 
 			await contract.connect(addr2).mintSamurai(50, {value: "2500000000000000000"});
-			// expect(await contract.totalSupply()).to.equal(100);
+			expect(await contract.totalSupply()).to.equal(52);
 
 		});
 
@@ -79,7 +90,6 @@ describe("KatanaNSamurai2", function () {
 			let quantity = 2;
 			// let chainId = await ethers.provider.getNetwork()
 			let _MAX_CLAIM_FRENS_ON_PRESALE = 10;
-			let _START_PRESALE_MINT_TIMESTAMP = 1636128000;
 
 			const domain = {
 				name: 'Katana N Samurai 2',
@@ -111,9 +121,34 @@ describe("KatanaNSamurai2", function () {
 
 		});
 
+
 		it("withdrawAll Function", async function () {
 
 			await contract.connect(owner).withdrawAll();
+
+		});
+
+		it("setURI", async function () {
+
+			await contract.connect(owner).setURI("http://api.katanansamurai.art/metadata/");
+
+		});
+
+		it("setMAX_SAMURAI", async function () {
+
+			await contract.connect(owner).setMAX_SAMURAI(10000);
+
+		});
+
+		it("set_PRICE", async function () {
+
+			await contract.connect(owner).set_PRICE("10000000000000000");
+
+		});
+
+		it("tokenURI", async function () {
+
+			await contract.connect(owner).tokenURI(2);
 
 		});
 	});

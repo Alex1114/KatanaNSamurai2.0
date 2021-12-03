@@ -10,7 +10,7 @@ const NFT = artifacts.require("KatanaNSamurai2");
 async function main() {
 
 
-  let nftAddress = "0x5CffCFA57a3E73A0fC8e9244355F9F2021745c5f";
+  let nftAddress = "0xac8c5CfC79b9Cee3B21b7B7D2b8044Ba2cCe45B2";
   let nft = await NFT.at(nftAddress);
 
   await nft.setMAX_SAMURAI(10000);

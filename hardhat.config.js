@@ -4,6 +4,7 @@ require('hardhat-deploy');
 require("hardhat-gas-reporter");
 require("dotenv").config();
 require('hardhat-contract-sizer');
+require('solidity-coverage')
 
 
 // This is a sample Hardhat task. To learn how to create your own go to

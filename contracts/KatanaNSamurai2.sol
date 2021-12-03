@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-// import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import './ERC721B.sol';
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
@@ -17,7 +16,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 // |_|\_\|_| \_||_____/  |____|(_) \___/
 
 interface KNS1Interface {
-  function tokensOfOwner(address _owner) external view returns(uint256[] memory );
+	function tokensOfOwner(address _owner) external view returns(uint256[] memory );
 }
 
 contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
@@ -26,58 +25,56 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	using Strings for uint256;
 
 	// Interface
-    // ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	address KNS1Address = 0xD6499Dac79a48cf21B7a6344a551A52DA943E10c;
   	KNS1Interface KNS1Contract = KNS1Interface(KNS1Address);
 
-    // Sales variables
-    // ------------------------------------------------------------------------
+	// Sales variables
+	// ------------------------------------------------------------------------
 	uint public MAX_SAMURAI = 10640;
-	uint public MAX_PRESALE = 6000; 
 	uint public PRICE = 0.05 ether;
 	uint public numPresale = 0;
-    uint public numSale = 0;
+	uint public numSale = 0;
 	uint public numClaim = 0;
 	uint public numGiveaway = 0;
 	uint public totalSupply = 0;
 	bool public hasSaleStarted = true;
 	bool public hasPresaleStarted = true;
-	bool public hasClaimeStarted = true;
+	bool public hasClaimStarted = true;
 	string private _baseTokenURI = "http://api.katanansamurai.art/Metadata/";
 
 	mapping (address => uint256) public hasClaimed;
 	mapping (address => uint256) public hasPresale;
 
-    // Events
-    // ------------------------------------------------------------------------
+	// Events
+	// ------------------------------------------------------------------------
 	event mintEvent(address owner, uint256 quantity, uint256 totalSupply);
 	
 	// Constructor
-    // ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	constructor()
 	EIP712("Katana N Samurai 2", "1.0.0")  
 	ERC721B("Katana N Samurai 2", "KNS2.0"){}
 
 	// Verify functions
-    // ------------------------------------------------------------------------
-    function verify(uint256 maxClaimNum, bytes memory SIGNATURE) public view returns (bool){
-        address recoveredAddr = ECDSA.recover(_hashTypedDataV4(keccak256(abi.encode(keccak256("NFT(address addressForClaim,uint256 maxClaimNum)"), _msgSender(), maxClaimNum))), SIGNATURE);
+	// ------------------------------------------------------------------------
+	function verify(uint256 maxClaimNum, bytes memory SIGNATURE) public view returns (bool){
+		address recoveredAddr = ECDSA.recover(_hashTypedDataV4(keccak256(abi.encode(keccak256("NFT(address addressForClaim,uint256 maxClaimNum)"), _msgSender(), maxClaimNum))), SIGNATURE);
 
-        return owner() == recoveredAddr;
-    }
+		return owner() == recoveredAddr;
+	}
 
 	// Claim functions
-    // ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	function claimSamurai(uint256 quantity, uint256 maxClaimNum, bytes memory SIGNATURE) external {
 		uint256[] memory tokenId = KNS1Contract.tokensOfOwner(msg.sender);
 
-		require(hasClaimeStarted == true, "Claime hasn't started.");
+		require(hasClaimStarted == true, "Claime hasn't started.");
 		require(verify(maxClaimNum, SIGNATURE), "Not eligible for claim.");
 		require(quantity > 0 && hasClaimed[msg.sender].add(quantity) <= tokenId.length, "Exceed the quantity that can be claimed");
 
 		for (uint i = 0; i < quantity; i++) {
-			uint mintIndex = totalSupply.add(1);
-			_safeMint(msg.sender, mintIndex);
+			_safeMint(msg.sender, totalSupply);
 			totalSupply = totalSupply.add(1);
 		}
 
@@ -88,17 +85,16 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	}
 
 	// Presale functions
-    // ------------------------------------------------------------------------
-    function mintPresaleSamurai(uint256 quantity, uint256 maxClaimNumOnPresale, bytes memory SIGNATURE) external payable{
+	// ------------------------------------------------------------------------
+	function mintPresaleSamurai(uint256 quantity, uint256 maxClaimNumOnPresale, bytes memory SIGNATURE) external payable{
 		require(hasPresaleStarted == true, "Presale hasn't started.");
-        require(verify(maxClaimNumOnPresale, SIGNATURE), "Not eligible for presale.");
-        require(quantity > 0 && hasPresale[msg.sender].add(quantity) <= maxClaimNumOnPresale, "Exceeds max presale number.");
-        require(msg.value >= PRICE.mul(quantity), "Ether value sent is below the price.");
-        require(totalSupply.add(quantity) <= MAX_SAMURAI, "Exceeds the MAX_SAMURAI.");
+		require(verify(maxClaimNumOnPresale, SIGNATURE), "Not eligible for presale.");
+		require(quantity > 0 && hasPresale[msg.sender].add(quantity) <= maxClaimNumOnPresale, "Exceeds max presale number.");
+		require(msg.value >= PRICE.mul(quantity), "Ether value sent is below the price.");
+		require(totalSupply.add(quantity) <= MAX_SAMURAI, "Exceeds MAX_SAMURAI.");
 
 		for (uint i = 0; i < quantity; i++) {
-			uint mintIndex = totalSupply.add(1);
-			_safeMint(msg.sender, mintIndex);
+			_safeMint(msg.sender, totalSupply);
 			totalSupply = totalSupply.add(1);
 		}
 
@@ -106,16 +102,15 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 		hasPresale[msg.sender] = hasPresale[msg.sender].add(quantity);
 
 		emit mintEvent(msg.sender, quantity, totalSupply);
-    }
+	}
 
 	// Giveaway functions
-    // ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	function giveawayMintSamurai(address _to, uint256 quantity) external onlyOwner{
 		require(totalSupply.add(quantity) <= MAX_SAMURAI, "Exceeds MAX_SAMURAI.");
 
 		for (uint i = 0; i < quantity; i++) {
-			uint mintIndex = totalSupply.add(1);
-			_safeMint(_to, mintIndex);
+			_safeMint(_to, totalSupply);
 			totalSupply = totalSupply.add(1);
 		}
 
@@ -124,7 +119,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	}
 
 	// Mint functions
-    // ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	function mintSamurai(uint256 numPurchase) external payable {
 		require(hasSaleStarted == true, "Sale hasn't started.");
 		require(numPurchase > 0 && numPurchase <= 50, "You can mint minimum 1, maximum 50 samurais.");
@@ -132,8 +127,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 		require(msg.value >= PRICE.mul(numPurchase), "Ether value sent is below the price.");
 
 		for (uint i = 0; i < numPurchase; i++) {
-			uint mintIndex = totalSupply.add(1);
-			_safeMint(msg.sender, mintIndex);
+			_safeMint(msg.sender, totalSupply);
 			totalSupply = totalSupply.add(1);
 		}
 
@@ -141,26 +135,22 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 		emit mintEvent(msg.sender, numPurchase, totalSupply);
 	}
 
-    // Base URI Functions
-    // ------------------------------------------------------------------------
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        require(_exists(tokenId), "TOKEN_NOT_EXISTS");
-        
-        return string(abi.encodePacked(_baseTokenURI, tokenId.toString()));
-    }
+	// Base URI Functions
+	// ------------------------------------------------------------------------
+	function tokenURI(uint256 tokenId) public view override returns (string memory) {
+		require(_exists(tokenId), "TOKEN_NOT_EXISTS");
+		
+		return string(abi.encodePacked(_baseTokenURI, tokenId.toString()));
+	}
 
-    // setting functions
-    // ------------------------------------------------------------------------
-    function setURI(string calldata _tokenURI) external onlyOwner {
-        _baseTokenURI = _tokenURI;
-    }
+	// setting functions
+	// ------------------------------------------------------------------------
+	function setURI(string calldata _tokenURI) external onlyOwner {
+		_baseTokenURI = _tokenURI;
+	}
 
 	function setMAX_SAMURAI(uint _MAX_num) public onlyOwner {
 		MAX_SAMURAI = _MAX_num;
-	}
-
-	function setMAX_PRESALE(uint _MAX_PS_num) public onlyOwner {
-		MAX_PRESALE = _MAX_PS_num;
 	}
 
 	function set_PRICE(uint _price) public onlyOwner {
@@ -175,6 +165,10 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 		hasPresaleStarted = true;
 	}
 
+	function startClaim() public onlyOwner {
+		hasClaimStarted = true;
+	}
+
 	function pauseSale() public onlyOwner {
 		hasSaleStarted = false;
 	}
@@ -183,8 +177,12 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 		hasPresaleStarted = false;
 	}
 
+	function pauseClaim() public onlyOwner {
+		hasClaimStarted = false;
+	}
+
 	// Withdrawal functions
-    // ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	function withdrawAll() public payable onlyOwner {
 		require(payable(msg.sender).send(address(this).balance));
 	}
