@@ -28,6 +28,7 @@
     "@truffle/hdwallet-provider": "^1.4.2-hdwallet-signTypedMessage.0",
     "@trufflesuite/web3-provider-engine": "^15.0.14",
     "dotenv": "^10.0.0",
+    "faunadb": "^4.4.1",
     "hardhat-contract-sizer": "^2.1.1",
     "hardhat-gas-reporter": "^1.0.4"
   }
