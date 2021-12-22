@@ -85,6 +85,42 @@ describe("KatanaNSamurai2", function () {
 
 		});
 
+		it("claimSamurai Function", async function () {
+
+			let quantity = 10;
+			// let chainId = await ethers.provider.getNetwork()
+			let _MAX_CLAIM_FRENS_ON_PRESALE = 10;
+
+			const domain = {
+				name: 'Katana N Samurai 2',
+				version: '1.0.0',
+				chainId: 31337,
+				verifyingContract: '0x668eD30aAcC7C7c206aAF1327d733226416233E2'
+			};
+
+			const types = {
+				NFT: [{
+						name: 'addressForClaim',
+						type: 'address'
+					},
+					{
+						name: 'maxClaimNum',
+						type: 'uint256'
+					},
+				],
+			};
+
+			const value = {
+				addressForClaim: addr2.address,
+				maxClaimNum: 10
+			};
+
+			signature = await owner._signTypedData(domain, types, value);
+
+			await contract.connect(addr2).claimSamurai(quantity, _MAX_CLAIM_FRENS_ON_PRESALE, signature);
+
+		});
+
 		it("mintPresaleSamurai Function", async function () {
 
 			let quantity = 2;

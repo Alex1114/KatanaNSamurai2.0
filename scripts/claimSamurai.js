@@ -31,12 +31,12 @@ async function main() {
     ],
   };
 
-  const value = { addressForClaim: "0xbd42A2035D41b450eE7106C9F9C0C736fb546226", maxClaimNum: 50};
+  const value = { addressForClaim: "0xf84D479C8430656C806153D9f9Da468eb7Ce00B1", maxClaimNum: 50};
 
   signature = await owner._signTypedData(domain, types, value);
   console.log(signature);
 
-  await nft.claimSamurai(quantity, maxClaimNum, signature);
+  // await nft.claimSamurai(quantity, maxClaimNum, signature);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

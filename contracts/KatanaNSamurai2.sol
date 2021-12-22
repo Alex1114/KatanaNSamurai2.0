@@ -15,32 +15,23 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 // | . \ | |\  | ____) |  / /_  _ | |_| |
 // |_|\_\|_| \_||_____/  |____|(_) \___/
 
-interface KNS1Interface {
-	function tokensOfOwner(address _owner) external view returns(uint256[] memory );
-}
-
 contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 
 	using SafeMath for uint256;
 	using Strings for uint256;
 
-	// Interface
-	// ------------------------------------------------------------------------
-	address KNS1Address = 0xD6499Dac79a48cf21B7a6344a551A52DA943E10c;
-  	KNS1Interface KNS1Contract = KNS1Interface(KNS1Address);
-
 	// Sales variables
 	// ------------------------------------------------------------------------
-	uint public MAX_SAMURAI = 10640;
-	uint public PRICE = 0.05 ether;
+	uint public MAX_SAMURAI = 6666;
+	uint public PRICE = 0.075 ether;
 	uint public numPresale = 0;
 	uint public numSale = 0;
 	uint public numClaim = 0;
 	uint public numGiveaway = 0;
 	uint public totalSupply = 0;
-	bool public hasSaleStarted = true;
-	bool public hasPresaleStarted = true;
-	bool public hasClaimStarted = true;
+	bool public hasSaleStarted = false;
+	bool public hasPresaleStarted = false;
+	bool public hasClaimStarted = false;
 	string private _baseTokenURI = "http://api.katanansamurai.art/Metadata/";
 
 	mapping (address => uint256) public hasClaimed;
@@ -67,11 +58,10 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	// Claim functions
 	// ------------------------------------------------------------------------
 	function claimSamurai(uint256 quantity, uint256 maxClaimNum, bytes memory SIGNATURE) external {
-		uint256[] memory tokenId = KNS1Contract.tokensOfOwner(msg.sender);
 
 		require(hasClaimStarted == true, "Claime hasn't started.");
 		require(verify(maxClaimNum, SIGNATURE), "Not eligible for claim.");
-		require(quantity > 0 && hasClaimed[msg.sender].add(quantity) <= tokenId.length, "Exceed the quantity that can be claimed");
+		require(quantity > 0 && hasClaimed[msg.sender].add(quantity) <= maxClaimNum, "Exceed the quantity that can be claimed");
 
 		for (uint i = 0; i < quantity; i++) {
 			_safeMint(msg.sender, totalSupply);
