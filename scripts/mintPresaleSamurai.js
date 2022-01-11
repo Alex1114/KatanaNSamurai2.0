@@ -10,31 +10,32 @@ const NFT = artifacts.require("KatanaNSamurai2");
 
 async function main() {
 
-  let nftAddress = "0xf84D479C8430656C806153D9f9Da468eb7Ce00B1";
-  let nft = await NFT.at(nftAddress);
-  // let chainId = await ethers.provider.getNetwork()
-  let owner = new ethers.Wallet(process.env.RINKEBY_PRIVATE_KEY);
-  let quantity = 2;
-  let maxClaimNum = 5;
+  // let nftAddress = "0xf84D479C8430656C806153D9f9Da468eb7Ce00B1";
+  // let nft = await NFT.at(nftAddress);
+  // // let chainId = await ethers.provider.getNetwork()
+  // let owner = new ethers.Wallet(process.env.RINKEBY_PRIVATE_KEY);
+  let quantity = 1;
+  let maxClaimNum = 1;
 
-  const domain = {
-    name: 'Katana N Samurai 2',
-    version: '1.0.0',
-    chainId: 4,
-    verifyingContract: nftAddress
-  };
+  // const domain = {
+  //   name: 'Katana N Samurai 2',
+  //   version: '1.0.0',
+  //   chainId: 4,
+  //   verifyingContract: nftAddress
+  // };
 
-  const types = {
-    NFT: [
-        { name: 'addressForClaim', type: 'address' },
-        { name: 'maxClaimNum', type: 'uint256' },
-    ],
-  };
+  // const types = {
+  //   NFT: [
+  //       { name: 'addressForClaim', type: 'address' },
+  //       { name: 'maxClaimNum', type: 'uint256' },
+  //   ],
+  // };
 
-  const value = { addressForClaim: "0xbd42A2035D41b450eE7106C9F9C0C736fb546226", maxClaimNum: 5};
+  // const value = { addressForClaim: "0xbd42A2035D41b450eE7106C9F9C0C736fb546226", maxClaimNum: 5};
 
-  signature = await owner._signTypedData(domain, types, value);
-  console.log(signature);
+  // signature = await owner._signTypedData(domain, types, value);
+  // console.log(signature);
+  signature = "0xdc39b1927a5f017ef5f1a795b38b4aed7f46d2998ea5f797accfc831fdc9cc580833a7e0411379e8b2b03589258f2283cde00ccf76dec1ef72a56a3fcaede53a1c"
 
   await nft.mintPresaleSamurai(quantity, maxClaimNum, signature, {value: "100000000000000000"});
 }

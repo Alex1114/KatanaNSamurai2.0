@@ -29,13 +29,16 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	uint public numClaim = 0;
 	uint public numGiveaway = 0;
 	uint public totalSupply = 0;
-	bool public hasSaleStarted = false;
-	bool public hasPresaleStarted = false;
+	bool public hasSaleStarted = true;
+	bool public hasPresaleStarted = true;
 	bool public hasClaimStarted = false;
-	string private _baseTokenURI = "http://api.katanansamurai.art/Metadata/";
+	string private _baseTokenURI = "http://api.ramen.katanansamurai.art/Metadata/";
 
 	mapping (address => uint256) public hasClaimed;
 	mapping (address => uint256) public hasPresale;
+
+    uint256 public saleStartTimestamp = 1642579200; // Public Sale start time in epoch format
+    uint256 public presaleStartTimestamp = 1642492800; // PreSale start time in epoch format
 
 	// Events
 	// ------------------------------------------------------------------------
@@ -46,6 +49,20 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	constructor()
 	EIP712("Katana N Samurai 2", "1.0.0")  
 	ERC721B("Katana N Samurai 2", "KNS2.0"){}
+
+    // Modifiers
+    // ------------------------------------------------------------------------
+    modifier onlyPublicSale() {
+		require(hasSaleStarted == true, "PUBLIC_SALE_NOT_ACTIVE");
+        require(block.timestamp >= saleStartTimestamp, "NOT_IN_PUBLIC_SALE_TIME");
+        _;
+    }
+
+    modifier onlyPresale() {
+		require(hasPresaleStarted == true, "PRESALE_NOT_ACTIVE");
+        require(block.timestamp >= presaleStartTimestamp, "NOT_IN_PRESALE_TIME");
+        _;
+    }
 
 	// Verify functions
 	// ------------------------------------------------------------------------
@@ -76,8 +93,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 
 	// Presale functions
 	// ------------------------------------------------------------------------
-	function mintPresaleSamurai(uint256 quantity, uint256 maxClaimNumOnPresale, bytes memory SIGNATURE) external payable{
-		require(hasPresaleStarted == true, "Presale hasn't started.");
+	function mintPresaleSamurai(uint256 quantity, uint256 maxClaimNumOnPresale, bytes memory SIGNATURE) external payable onlyPresale{
 		require(verify(maxClaimNumOnPresale, SIGNATURE), "Not eligible for presale.");
 		require(quantity > 0 && hasPresale[msg.sender].add(quantity) <= maxClaimNumOnPresale, "Exceeds max presale number.");
 		require(msg.value >= PRICE.mul(quantity), "Ether value sent is below the price.");
@@ -110,8 +126,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 
 	// Mint functions
 	// ------------------------------------------------------------------------
-	function mintSamurai(uint256 numPurchase) external payable {
-		require(hasSaleStarted == true, "Sale hasn't started.");
+	function mintSamurai(uint256 numPurchase) external payable onlyPublicSale{
 		require(numPurchase > 0 && numPurchase <= 50, "You can mint minimum 1, maximum 50 samurais.");
 		require(totalSupply.add(numPurchase) <= MAX_SAMURAI, "Sold out!");
 		require(msg.value >= PRICE.mul(numPurchase), "Ether value sent is below the price.");
@@ -133,42 +148,38 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 		return string(abi.encodePacked(_baseTokenURI, tokenId.toString()));
 	}
 
+    // Burn Functions
+    // ------------------------------------------------------------------------
+    function burn(uint256 tokenId) external onlyOwner {
+        _burn(tokenId);
+    }
+
 	// setting functions
 	// ------------------------------------------------------------------------
 	function setURI(string calldata _tokenURI) external onlyOwner {
 		_baseTokenURI = _tokenURI;
 	}
 
-	function setMAX_SAMURAI(uint _MAX_num) public onlyOwner {
+	function setMAX_SAMURAI(uint _MAX_num) external onlyOwner {
 		MAX_SAMURAI = _MAX_num;
 	}
 
-	function set_PRICE(uint _price) public onlyOwner {
+	function set_PRICE(uint _price) external onlyOwner {
 		PRICE = _price;
 	}
 
-	function startSale() public onlyOwner {
-		hasSaleStarted = true;		
-	}
+    function setPresale(bool _hasPresaleStarted,uint256 _presaleStartTimestamp) external onlyOwner {
+        hasPresaleStarted = _hasPresaleStarted;
+        presaleStartTimestamp = _presaleStartTimestamp;
+    }
 
-	function startPresale() public onlyOwner {
-		hasPresaleStarted = true;
-	}
+    function setPublicSale(bool _hasSaleStarted,uint256 _saleStartTimestamp) external onlyOwner {
+        hasSaleStarted = _hasSaleStarted;
+        saleStartTimestamp = _saleStartTimestamp;
+    }
 
-	function startClaim() public onlyOwner {
-		hasClaimStarted = true;
-	}
-
-	function pauseSale() public onlyOwner {
-		hasSaleStarted = false;
-	}
-
-	function pausePresale() public onlyOwner {
-		hasPresaleStarted = false;
-	}
-
-	function pauseClaim() public onlyOwner {
-		hasClaimStarted = false;
+	function setClaim(bool _hasClaimStarted) external onlyOwner {
+		hasClaimStarted = _hasClaimStarted;
 	}
 
 	// Withdrawal functions

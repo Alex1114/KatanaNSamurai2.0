@@ -4,6 +4,7 @@ require('hardhat-deploy');
 require("hardhat-gas-reporter");
 require("dotenv").config();
 require('hardhat-contract-sizer');
+require("@nomiclabs/hardhat-etherscan");
 require('solidity-coverage')
 
 
@@ -45,5 +46,8 @@ module.exports = {
       gasPrice: 20000000000
 
     }
+  },  
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY
   }
 };

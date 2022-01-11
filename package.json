@@ -11,6 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-etherscan": "^3.0.0",
     "@nomiclabs/hardhat-truffle5": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@nomiclabs/hardhat-web3": "^2.0.0",
@@ -28,8 +29,10 @@
     "@truffle/hdwallet-provider": "^1.4.2-hdwallet-signTypedMessage.0",
     "@trufflesuite/web3-provider-engine": "^15.0.14",
     "dotenv": "^10.0.0",
+    "etherscan": "^0.2.2",
     "faunadb": "^4.4.1",
     "hardhat-contract-sizer": "^2.1.1",
+    "hardhat-etherscan": "^1.0.1",
     "hardhat-gas-reporter": "^1.0.4"
   }
 }

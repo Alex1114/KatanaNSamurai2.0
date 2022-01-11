@@ -26,7 +26,7 @@ describe("KatanaNSamurai2", function () {
 	before(async function () {
 
 		Token = await ethers.getContractFactory("KatanaNSamurai2");
-		[owner, addr1, addr2, ...addrs] = await ethers.getSigners();
+		[owner, addr1, addr2,...addrs] = await ethers.getSigners();
 
 		contract = await Token.deploy();
 		console.log("KatanaNSamurai2 deployed to:", contract.address);
@@ -35,97 +35,109 @@ describe("KatanaNSamurai2", function () {
 
 	describe("KatanaNSamurai2 Test", function () {
 
-		it("pauseSale Function", async function () {
+		// it("pauseSale Function", async function () {
 
-			await contract.connect(owner).pauseSale();
+		// 	await contract.connect(owner).pauseSale();
 
-		});
+		// });
 
-		it("pauseClaim Function", async function () {
+		// it("pauseClaim Function", async function () {
 
-			await contract.connect(owner).pauseClaim();
+		// 	await contract.connect(owner).pauseClaim();
 
-		});
+		// });
 
-		it("pausePresale Function", async function () {
+		// it("pausePresale Function", async function () {
 
-			await contract.connect(owner).pausePresale();
+		// 	await contract.connect(owner).pausePresale();
 
-		});
+		// });
 
-		it("startSale Function", async function () {
+		// it("startSale Function", async function () {
 
-			await contract.connect(owner).startSale();
+		// 	await contract.connect(owner).startSale();
 
-		});
+		// });
 
-		it("startClaim Function", async function () {
+		// it("startClaim Function", async function () {
 
-			await contract.connect(owner).startClaim();
+		// 	await contract.connect(owner).startClaim();
 
-		});
+		// });
 
-		it("startPresale Function", async function () {
+		// it("startPresale Function", async function () {
 
-			await contract.connect(owner).startPresale();
+		// 	await contract.connect(owner).startPresale();
 
-		});
+		// });
 
-		it("giveawayMintSamurai Function", async function () {
+		// it("giveawayMintSamurai Function", async function () {
 
-			await contract.connect(owner).giveawayMintSamurai(addr2.address, 2);
-			expect(await contract.totalSupply()).to.equal(2);
+		// 	await contract.connect(owner).giveawayMintSamurai(addr2.address, 2);
+		// 	expect(await contract.totalSupply()).to.equal(2);
 
-		});
+		// });
 
-		it("mintSamurai Function", async function () {
+		// it("mintSamurai Function", async function (done) {
+		// 	this.timeout(100000);
 
-			await contract.connect(addr2).mintSamurai(50, {value: "2500000000000000000"});
-			expect(await contract.totalSupply()).to.equal(52);
+		// 	for (var i=0; i<133; i++){
+		// 		await contract.connect(addr2).mintSamurai(50, {value: "3750000000000000000"});
 
-		});
+		// 	}
+			
+			// await contract.connect(addr2).mintSamurai(50, {value: "3750000000000000000"});
+			// await contract.connect(addr2).mintSamurai(50, {value: "3750000000000000000"});
+			// await contract.connect(addr2).mintSamurai(50, {value: "3750000000000000000"});
+			// await contract.connect(addr2).mintSamurai(50, {value: "3750000000000000000"});
+			// await contract.connect(addr2).mintSamurai(50, {value: "3750000000000000000"});
+		
+			// expect(await contract.totalSupply()).to.equal(6666);
+			// done();
 
-		it("claimSamurai Function", async function () {
+		// });
 
-			let quantity = 10;
-			// let chainId = await ethers.provider.getNetwork()
-			let _MAX_CLAIM_FRENS_ON_PRESALE = 10;
+		// it("claimSamurai Function", async function () {
 
-			const domain = {
-				name: 'Katana N Samurai 2',
-				version: '1.0.0',
-				chainId: 31337,
-				verifyingContract: '0x668eD30aAcC7C7c206aAF1327d733226416233E2'
-			};
+		// 	let quantity = 10;
+		// 	// let chainId = await ethers.provider.getNetwork()
+		// 	let _MAX_CLAIM_FRENS_ON_PRESALE = 10;
 
-			const types = {
-				NFT: [{
-						name: 'addressForClaim',
-						type: 'address'
-					},
-					{
-						name: 'maxClaimNum',
-						type: 'uint256'
-					},
-				],
-			};
+		// 	const domain = {
+		// 		name: 'Katana N Samurai 2',
+		// 		version: '1.0.0',
+		// 		chainId: 31337,
+		// 		verifyingContract: '0x668eD30aAcC7C7c206aAF1327d733226416233E2'
+		// 	};
 
-			const value = {
-				addressForClaim: addr2.address,
-				maxClaimNum: 10
-			};
+		// 	const types = {
+		// 		NFT: [{
+		// 				name: 'addressForClaim',
+		// 				type: 'address'
+		// 			},
+		// 			{
+		// 				name: 'maxClaimNum',
+		// 				type: 'uint256'
+		// 			},
+		// 		],
+		// 	};
 
-			signature = await owner._signTypedData(domain, types, value);
+		// 	const value = {
+		// 		addressForClaim: addr2.address,
+		// 		maxClaimNum: 10
+		// 	};
 
-			await contract.connect(addr2).claimSamurai(quantity, _MAX_CLAIM_FRENS_ON_PRESALE, signature);
+		// 	signature = await owner._signTypedData(domain, types, value);
 
-		});
+		// 	await contract.connect(addr2).claimSamurai(quantity, _MAX_CLAIM_FRENS_ON_PRESALE, signature);
+
+		// });
 
 		it("mintPresaleSamurai Function", async function () {
 
-			let quantity = 2;
+			let quantity = 1;
 			// let chainId = await ethers.provider.getNetwork()
-			let _MAX_CLAIM_FRENS_ON_PRESALE = 10;
+			let _MAX_CLAIM_FRENS_ON_PRESALE = 1;
 
 			const domain = {
 				name: 'Katana N Samurai 2',
@@ -146,46 +158,64 @@ describe("KatanaNSamurai2", function () {
 				],
 			};
 
-			const value = {
+			var value = {
 				addressForClaim: addr1.address,
-				maxClaimNum: 10
+				maxClaimNum: 1
 			};
 
 			signature = await owner._signTypedData(domain, types, value);
 
-			await contract.connect(addr1).mintPresaleSamurai(quantity, _MAX_CLAIM_FRENS_ON_PRESALE, signature, {value: "100000000000000000"});
+			await contract.connect(addr1).mintPresaleSamurai(quantity, _MAX_CLAIM_FRENS_ON_PRESALE, signature, {value: "750000000000000000"});
 
+//
+
+
+
+
+
+			// var value = {
+			// 	addressForClaim: addr2.address,
+			// 	maxClaimNum: 1
+			// };
+
+			// signature = await owner._signTypedData(domain, types, value);
+
+			// await contract.connect(addr2).mintPresaleSamurai(quantity, _MAX_CLAIM_FRENS_ON_PRESALE, signature, {value: "750000000000000000"});
+		
+		
+
+		
 		});
 
 
-		it("withdrawAll Function", async function () {
+		// it("withdrawAll Function", async function () {
 
-			await contract.connect(owner).withdrawAll();
+		// 	await contract.connect(owner).withdrawAll();
 
-		});
+		// });
 
-		it("setURI", async function () {
+		// it("setURI", async function () {
 
-			await contract.connect(owner).setURI("http://api.katanansamurai.art/metadata/");
+		// 	await contract.connect(owner).setURI("http://api.katanansamurai.art/metadata/");
 
-		});
+		// });
 
-		it("setMAX_SAMURAI", async function () {
+		// it("setMAX_SAMURAI", async function () {
 
-			await contract.connect(owner).setMAX_SAMURAI(10000);
+		// 	await contract.connect(owner).setMAX_SAMURAI(10000);
 
-		});
+		// });
 
-		it("set_PRICE", async function () {
+		// it("set_PRICE", async function () {
 
-			await contract.connect(owner).set_PRICE("10000000000000000");
+		// 	await contract.connect(owner).set_PRICE("10000000000000000");
 
-		});
+		// });
 
-		it("tokenURI", async function () {
+		// it("tokenURI", async function () {
 
-			await contract.connect(owner).tokenURI(2);
+		// 	await contract.connect(owner).tokenURI(2);
 
-		});
+		// });
 	});
 });
