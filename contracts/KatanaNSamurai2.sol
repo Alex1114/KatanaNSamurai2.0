@@ -126,7 +126,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 
 	// Mint functions
 	// ------------------------------------------------------------------------
-	function mintSamurai(uint256 numPurchase) external payable onlyPublicSale{
+	function publicMintSamurai(uint256 numPurchase) external payable onlyPublicSale{
 		require(numPurchase > 0 && numPurchase <= 50, "You can mint minimum 1, maximum 50 samurais.");
 		require(totalSupply.add(numPurchase) <= MAX_SAMURAI, "Sold out!");
 		require(msg.value >= PRICE.mul(numPurchase), "Ether value sent is below the price.");
