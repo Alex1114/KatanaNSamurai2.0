@@ -23,6 +23,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	// Sales variables
 	// ------------------------------------------------------------------------
 	uint public MAX_SAMURAI = 6666;
+	uint public STAGE_LIMIT = 666;
 	uint public PRICE = 0.075 ether;
 	uint public numPresale = 0;
 	uint public numSale = 0;
@@ -37,8 +38,8 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	mapping (address => uint256) public hasClaimed;
 	mapping (address => uint256) public hasPresale;
 
-    uint256 public saleStartTimestamp = 1642579200; // Public Sale start time in epoch format
-    uint256 public presaleStartTimestamp = 1642492800; // PreSale start time in epoch format
+    uint256 public saleStartTimestamp = 1642377900; // Public Sale start time in epoch format
+    uint256 public presaleStartTimestamp = 1642378200; // PreSale start time in epoch format
 
 	// Events
 	// ------------------------------------------------------------------------
@@ -94,6 +95,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	// Presale functions
 	// ------------------------------------------------------------------------
 	function mintPresaleSamurai(uint256 quantity, uint256 maxClaimNumOnPresale, bytes memory SIGNATURE) external payable onlyPresale{
+		require(totalSupply.add(quantity) <= STAGE_LIMIT, "This stage is sold out!");
 		require(verify(maxClaimNumOnPresale, SIGNATURE), "Not eligible for presale.");
 		require(quantity > 0 && hasPresale[msg.sender].add(quantity) <= maxClaimNumOnPresale, "Exceeds max presale number.");
 		require(msg.value >= PRICE.mul(quantity), "Ether value sent is below the price.");
@@ -128,6 +130,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	// ------------------------------------------------------------------------
 	function publicMintSamurai(uint256 numPurchase) external payable onlyPublicSale{
 		require(numPurchase > 0 && numPurchase <= 50, "You can mint minimum 1, maximum 50 samurais.");
+		require(totalSupply.add(numPurchase) <= STAGE_LIMIT, "This stage is sold out!");
 		require(totalSupply.add(numPurchase) <= MAX_SAMURAI, "Sold out!");
 		require(msg.value >= PRICE.mul(numPurchase), "Ether value sent is below the price.");
 
@@ -158,6 +161,10 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	// ------------------------------------------------------------------------
 	function setURI(string calldata _tokenURI) external onlyOwner {
 		_baseTokenURI = _tokenURI;
+	}
+
+	function setSTAGE_LIMIT(uint _STAGE_LIMIT) external onlyOwner {
+		STAGE_LIMIT = _STAGE_LIMIT;
 	}
 
 	function setMAX_SAMURAI(uint _MAX_num) external onlyOwner {

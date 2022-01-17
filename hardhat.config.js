@@ -39,13 +39,13 @@ module.exports = {
         "mnemonic": process.env.RINKEBY_TEST_MNEMONIC
       }
     },
-    mainnet: {
-      url: process.env.ALCHEMY_API_MAINNET_KEY, 
-      accounts:[process.env.MAINNET_PRIVATE_KEY],
-      gas: 206511,
-      gasPrice: 20000000000
+    // mainnet: {
+    //   url: process.env.ALCHEMY_API_MAINNET_KEY, 
+    //   accounts:[process.env.MAINNET_PRIVATE_KEY],
+    //   gas: 206511,
+    //   gasPrice: 20000000000
 
-    }
+    // }
   },  
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY
