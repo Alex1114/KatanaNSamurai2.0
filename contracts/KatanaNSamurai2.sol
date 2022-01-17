@@ -38,8 +38,8 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	mapping (address => uint256) public hasClaimed;
 	mapping (address => uint256) public hasPresale;
 
-    uint256 public saleStartTimestamp = 1642518000; // Public Sale start time in epoch format
-    uint256 public presaleStartTimestamp = 1642604400; // PreSale start time in epoch format
+    uint256 public saleStartTimestamp = 1642409730; // Public Sale start time in epoch format
+    uint256 public presaleStartTimestamp = 1642409730; // PreSale start time in epoch format
 
 	// Events
 	// ------------------------------------------------------------------------
@@ -77,7 +77,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	// ------------------------------------------------------------------------
 	function claimSamurai(uint256 quantity, uint256 maxClaimNum, bytes memory SIGNATURE) external {
 
-		require(hasClaimStarted == true, "Claime hasn't started.");
+		require(hasClaimStarted == true, "Claim hasn't started.");
 		require(verify(maxClaimNum, SIGNATURE), "Not eligible for claim.");
 		require(quantity > 0 && hasClaimed[msg.sender].add(quantity) <= maxClaimNum, "Exceed the quantity that can be claimed");
 

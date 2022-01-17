@@ -10,10 +10,10 @@ const NFT = artifacts.require("KatanaNSamurai2");
 async function main() {
 
 
-  let nftAddress = "0xf84D479C8430656C806153D9f9Da468eb7Ce00B1";
+  let nftAddress = "0x4d36a6F81B6c861BdFb7254ECfB0A87aA2028Bac";
   let nft = await NFT.at(nftAddress);
 
-  await nft.startSale();
+  await nft.setPublicSale(1, 1642409730);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
