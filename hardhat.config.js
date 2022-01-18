@@ -43,13 +43,13 @@ module.exports = {
       url: process.env.ALCHEMY_API_ROPSTEN_KEY,
       accounts:[process.env.ROPSTEN_PRIVATE_KEY]
     },
-    // mainnet: {
-    //   url: process.env.ALCHEMY_API_MAINNET_KEY, 
-    //   accounts:[process.env.MAINNET_PRIVATE_KEY],
-    //   gas: 206511,
-    //   gasPrice: 20000000000
+    mainnet: {
+      url: process.env.ALCHEMY_API_MAINNET_KEY, 
+      accounts:[process.env.MAINNET_PRIVATE_KEY],
+      gas: 5367599,
+      gasPrice: 85000000000
 
-    // }
+    }
   },  
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY

@@ -32,14 +32,14 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	uint public totalSupply = 0;
 	bool public hasSaleStarted = true;
 	bool public hasPresaleStarted = true;
-	bool public hasClaimStarted = false;
+	bool public hasClaimStarted = true;
 	string private _baseTokenURI = "http://api.ramen.katanansamurai.art/Metadata/";
 
 	mapping (address => uint256) public hasClaimed;
 	mapping (address => uint256) public hasPresale;
 
-    uint256 public saleStartTimestamp = 1642481400; // Public Sale start time in epoch format
-    uint256 public presaleStartTimestamp = 1642482600; // PreSale start time in epoch format
+    uint256 public saleStartTimestamp = 1642518000; // Public Sale start time in epoch format
+    uint256 public presaleStartTimestamp = 1642410000; // PreSale start time in epoch format
 
 	// Events
 	// ------------------------------------------------------------------------
@@ -128,7 +128,7 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 
 	// Mint functions
 	// ------------------------------------------------------------------------
-	function publicMintSamurai(uint256 numPurchase) external payable onlyPublicSale{
+	function mintPublicSaleSamurai(uint256 numPurchase) external payable onlyPublicSale{
 		require(numPurchase > 0 && numPurchase <= 50, "You can mint minimum 1, maximum 50 samurais.");
 		require(totalSupply.add(numPurchase) <= STAGE_LIMIT, "This stage is sold out!");
 		require(totalSupply.add(numPurchase) <= MAX_SAMURAI, "Sold out!");
