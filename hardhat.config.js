@@ -39,6 +39,10 @@ module.exports = {
         "mnemonic": process.env.RINKEBY_TEST_MNEMONIC
       }
     },
+    ropsten: {
+      url: process.env.ALCHEMY_API_ROPSTEN_KEY,
+      accounts:[process.env.ROPSTEN_PRIVATE_KEY]
+    },
     // mainnet: {
     //   url: process.env.ALCHEMY_API_MAINNET_KEY, 
     //   accounts:[process.env.MAINNET_PRIVATE_KEY],

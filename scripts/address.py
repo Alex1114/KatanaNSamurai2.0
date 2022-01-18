@@ -3,7 +3,7 @@
 
 import csv
 
-path = 'Addresses_1.txt'
+path = 'test.txt'
 
 address = []
 

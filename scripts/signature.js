@@ -8,20 +8,18 @@ var adminClient = new faunadb.Client({
 
 async function main() {
 
-	let nftAddress = "0x4d36a6F81B6c861BdFb7254ECfB0A87aA2028Bac";
-	let owner = new ethers.Wallet(process.env.RINKEBY_PRIVATE_KEY);
+	let nftAddress = "0x259fc96D6077038D50C339a8c797e75Cb6f05731";
+	let owner = new ethers.Wallet(process.env.ROPSTEN_PRIVATE_KEY);
 	let serial = 0;
 	let maxClaimNum = 1;
-	let addressForClaim = ['0xcd0fac521ad5456123746d895b8a8eab2137c135','0xb0f300b96f7b7377e877c3c9d20777081a12aae6','0x7b11418b321960838513f050e21c64df75131668','0x6bfaa7581bb90ef4c9caac88dfcba724949bb120','0x9e731ba261f790aff5d4588a8d6a266729a6ba11','0x29aa2e71089dae80266169281f1621f7bda9b50c','0x8be83453c6371011aaee2f881bdca9da490b493e','0x55fba7be90ef597153b33f72b3b4cb71623638e5','0xc02b13f0add866a86030cd35a019f40b2b335613','0xe7dbf4dd02bd72c33794e00877cfa1777eebcc91','0x25efbecf9fdc794aca9977483ce415272ba5acd9'];
-
-
+	let addressForClaim = ['0x5279246e3626cebe71a4c181382a50a71d2a4156','0xbd42a2035d41b450ee7106c9f9c0c736fb546226'];
 
 	
 	for (let i = 0; i < addressForClaim.length; i++) {
 		const domain = {
 			name: 'Katana N Samurai 2',
 			version: '1.0.0',
-			chainId: 4,
+			chainId: 1,
 			verifyingContract: nftAddress
 		};
 

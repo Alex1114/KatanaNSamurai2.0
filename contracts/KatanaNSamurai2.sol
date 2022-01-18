@@ -38,8 +38,8 @@ contract KatanaNSamurai2 is Ownable, EIP712, ERC721B {
 	mapping (address => uint256) public hasClaimed;
 	mapping (address => uint256) public hasPresale;
 
-    uint256 public saleStartTimestamp = 1642409730; // Public Sale start time in epoch format
-    uint256 public presaleStartTimestamp = 1642409730; // PreSale start time in epoch format
+    uint256 public saleStartTimestamp = 1642481400; // Public Sale start time in epoch format
+    uint256 public presaleStartTimestamp = 1642482600; // PreSale start time in epoch format
 
 	// Events
 	// ------------------------------------------------------------------------
