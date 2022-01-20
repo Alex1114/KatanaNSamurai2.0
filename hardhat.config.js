@@ -46,8 +46,8 @@ module.exports = {
     mainnet: {
       url: process.env.ALCHEMY_API_MAINNET_KEY, 
       accounts:[process.env.MAINNET_PRIVATE_KEY],
-      gas: 5367599,
-      gasPrice: 85000000000
+      gas: 32718,
+      gasPrice: 151000000000
 
     }
   },  
